@@ -22,3 +22,5 @@ crash_df <- st_join(crash_sf, zip_codes, join = st_within) |>
     crash_count = n(),
     severe_crash_count = sum(MOST_SEVERE_INJURY %in% c("FATAL", "INCAPACITATING INJURY"))
   )
+
+write
