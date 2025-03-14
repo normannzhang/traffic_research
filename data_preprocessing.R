@@ -3,12 +3,19 @@ library(leaflet)
 library(dplyr)
 library(sf)
 library(ggplot2)
+library(stringr)
+library(lemon)
 
 setwd('/Users/normanzhang/Desktop/traffic_research')
 
 # Load traffic/crash data
 traffic_df <- read.csv('/Users/normanzhang/Desktop/traffic_crash.csv') |>
-  filter(LOCATION != '')
+  filter(LOCATION != '') |>
+  mutate(
+    YEAR = str_extract(DATE_POLICE_NOTIFIED, "\\d{4}"),
+    TIME_ONLY = str_extract(DATE_POLICE_NOTIFIED, "\\d{2}:\\d{2}:\\d{2} [APM]{2}")
+  ) |>
+  filter(!YEAR  %in% c('2013', '2025'))
 
 # Load Chicago ZIP Code .shp file
 zip_codes <- st_read('chicago_shapefile/chicago.shp')
@@ -23,4 +30,7 @@ crash_df <- st_join(crash_sf, zip_codes, join = st_within) |>
     severe_crash_count = sum(MOST_SEVERE_INJURY %in% c("FATAL", "INCAPACITATING INJURY"))
   )
 
-write
+# Save cleaned data
+# write.csv(crash_df, 'data/cleaned_traffic_data.csv')
+
+crash_df
