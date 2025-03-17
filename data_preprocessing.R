@@ -1,10 +1,13 @@
 library(shiny)
 library(leaflet)
+library(leaflet.extras)
 library(dplyr)
 library(sf)
 library(ggplot2)
 library(stringr)
 library(lemon)
+library(tidyverse)
+
 
 setwd('/Users/normanzhang/Desktop/traffic_research')
 
@@ -28,9 +31,8 @@ crash_df <- st_join(crash_sf, zip_codes, join = st_within) |>
   summarise(
     crash_count = n(),
     severe_crash_count = sum(MOST_SEVERE_INJURY %in% c("FATAL", "INCAPACITATING INJURY"))
-  )
+  ) |>
+  st_drop_geometry(crash_df)
 
 # Save cleaned data
-# write.csv(crash_df, 'data/cleaned_traffic_data.csv')
-
-crash_df
+#write.csv(crash_df, 'data/cleaned_traffic_data.csv', row.names = FALSE)

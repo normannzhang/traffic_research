@@ -66,3 +66,5 @@ facet_crash_data <- function(data) {
   return(combined)
 }
 
+facet_crash_data(traffic_df)
+
