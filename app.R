@@ -13,6 +13,7 @@ library(shinyWidgets)
 library(xgboost)
 library(glue)
 library(reticulate)
+library(scales)
 
 source('init.R')
 source('visualizations.R')
@@ -194,7 +195,7 @@ ui <- dashboardPage(
                   closable = FALSE,
                   maximizable = FALSE,
                   title = 'Traffic Accidents in Chicago',
-                  style = "height: 100px; display: flex; align-items: center; justify-content: center; overflow: hidden;",
+                  style = "height: 300px; display: flex; align-items: center; justify-content: center; overflow: hidden;",
                   div(style = "height: 100%; width: 200%; display: flex; align-items: center; justify-content: center;",
                       tags$img(src = "risk_model1.png", style = "width: 110%; height: 100%; object-fit: contain;")
                   )
@@ -204,6 +205,7 @@ ui <- dashboardPage(
                 bs4Card(
                   title = 'Select Crash Conditions',
                   width = 6,
+                  status = 'danger',
                   solidHeader = TRUE,
                   style = "background-color: #B3DDF2; color: black;",
                   selectInput('TRAFFIC_CONTROL_DEVICE', 'Traffic Control Device:',
@@ -247,12 +249,14 @@ ui <- dashboardPage(
                   )
                 )
               ),
+              br(),
               fluidRow(
                 bs4Card(
                   title = 'Select Crash Conditions (Excludes ZIP)',
                   width = 4,
                   solidHeader = TRUE,
-                  style = "background-color: #B3DDF2; color: black;",
+                  status = 'danger',
+                  style = "background-color: #87CEEB; color: black;",
                   selectInput('RM_TRAFFIC_CONTROL_DEVICE', 'Traffic Control Device:',
                               choices = levels(smote_data$TRAFFIC_CONTROL_DEVICE)),
                   selectInput('RM_DEVICE_CONDITION', 'Device Condition:',
