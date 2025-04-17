@@ -44,29 +44,36 @@ leaflet_plot <- function(model_data, spatial_data){
 # Plot total number of accidents vs percentage of severe crashes
 bar_circle_plot <- function(data) {
   
-  df <- data |> 
-    group_by(YEAR) |> 
+  df <- data |>
+    group_by(YEAR) |>
     summarise(
-      total_crashes = n(), 
-      severe_crashes = sum(severe == 1)) |> 
+      total_crashes = n(),
+      severe_crashes = sum(severe == 1)
+    ) |>
     mutate(pct_change = severe_crashes / total_crashes)
   
-  ggplot(df, aes(x = YEAR)) +
-    geom_col(aes(y = total_crashes), fill = '#56A0D3') +
-    geom_point(aes(y = pct_change * max(total_crashes)), color = 'firebrick', size = 3.5) +
+  ggplot(df, aes(x = factor(YEAR))) +
+    geom_col(aes(y = total_crashes), fill = '#B3DDF2') +
+    geom_point(aes(y = pct_change * max(total_crashes)), 
+               color = '#FF0000', size = 3.5) +
     scale_y_continuous(
       name = 'Total Crashes',
-      sec.axis = sec_axis(~ . / max(df$total_crashes), name = '% of Crashes That Were Severe', labels = scales::percent_format(accuracy = 0.1))
+      sec.axis = sec_axis(~ . / max(df$total_crashes), 
+                          name = '% of Crashes That Were Severe', 
+                          labels = percent_format(accuracy = 0.1))
     ) +
     labs(
       x = 'Year',
-      caption = 'Shaded bars = total crashes | Red line = % of crashes that were severe'
+      caption = 'Shaded bars = total crashes | Red dots = % of crashes that were severe'
     ) +
     theme_minimal() +
     theme(
-      axis.title.y.right = element_text(color = 'firebrick'),
-      axis.text.y.right = element_text(color = 'firebrick', face = 'bold'),
-      axis.title.y.left = element_text(color = '#56A0D3', face = 'bold')
+      axis.title.y.right = element_text(color = '#FF0000'),
+      axis.text.y.right = element_text(color = '#FF0000', face = 'bold', size = 12),
+      axis.title.y.left = element_text(color = '#B3DDF2', face = 'bold', size = 12),
+      axis.text.x = element_text(angle = 0, size = 12, face = 'bold'),
+      axis.text.y = element_text(angle = 0, size = 12, face = 'bold'),
+      axis.title.x = element_text(size = 12, face = 'bold')
     )
 }
 
@@ -111,22 +118,16 @@ facet_lollipop_plot <- function(data) {
       x = 'Condition Type'
     ) +
     theme_minimal(base_size = 13) +
-    # theme(
-    #   strip.background = element_rect(fill = 'gray85', color = 'gray80'),
-    #   strip.text = element_text(face = 'bold', size = 13),
-    #   axis.text.x = element_text(angle = 45, hjust = 1, size = 8),
-    #   panel.spacing = unit(1, 'lines'),
-    #   plot.title = element_text(face = 'bold', hjust = 0.5)
-    # )
     theme(
       strip.background = element_rect(fill = 'gray85', color = 'gray80'),
-      strip.text = element_text(face = 'bold', size = 13),
-      axis.text.x = element_text(angle = 45, hjust = 1, size = 8),
+      strip.text = element_text(face = 'bold', size = 16),
+      axis.text.x = element_text(angle = 65, face = 'bold',hjust = 1, size = 9),
+      axis.text.y = element_text(face = 'bold', size = 8),
+      axis.title.x = element_text(face = 'bold', size = 16),
+      axis.title.y = element_text(face = 'bold', size = 16),
       panel.spacing = unit(2, 'lines'),
       plot.margin = margin(20, 20, 40, 20),
       plot.title = element_text(face = 'bold', hjust = 0.5)
     )
 }
-
-facet_lollipop_plot(model_df)
 
