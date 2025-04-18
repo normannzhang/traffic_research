@@ -5,7 +5,7 @@ account: normanzhang
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 14514218
-bundleId: 10134815
+bundleId: 10134928
 url: https://normanzhang.shinyapps.io/traffic_research/
 version: 1
 asMultiple: FALSE

@@ -43,6 +43,8 @@ enc <- list(
 # Store the model using python interpreter and pickle model
 py_run_string("
 import pickle
-with open('model/rf_classifier.pkl', 'rb') as f:
+import gzip
+
+with gzip.open('model/rf_classifier.pkl.gz', 'rb') as f:
     rf_model = pickle.load(f)
 ")
